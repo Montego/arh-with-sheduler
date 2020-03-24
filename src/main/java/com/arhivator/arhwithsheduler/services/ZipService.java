@@ -10,9 +10,9 @@ import java.util.zip.ZipOutputStream;
 
 
 class ZipService {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH-mm-ss");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk-mm-ss");
 
-    private static String formatDate() {
+    private String formatDate() {
         return dateFormat.format(new Date());
     }
 
@@ -30,7 +30,7 @@ class ZipService {
             if (dirList != null) {
                 for (File sd : dirList) {
                     if (sd.isFile()) {
-                        System.out.println("Adding: " + sd.getName());
+//                        System.out.println("Adding: " + sd.getName());
                         FileInputStream fi = new FileInputStream(srcFolder + "/" + sd.getName());
                         origin = new BufferedInputStream(fi, BUFFER);
                         ZipEntry entry = new ZipEntry(sd.getName());
@@ -73,7 +73,7 @@ class ZipService {
                         String[] files = f.list();
                         if (files != null) {
                             for (String file : files) {
-                                System.out.println("Adding: " + file);
+//                                System.out.println("Adding: " + file);
                                 FileInputStream fi = new FileInputStream(srcFolder + "/" + sd + "/" + file);
                                 origin = new BufferedInputStream(fi, BUFFER);
                                 ZipEntry entry = new ZipEntry(sd + "/" + file);
@@ -110,6 +110,7 @@ class ZipService {
     }
 
     static void makeZipForEveryFolder(Set<String> folderNames, String directoryOUT, String arhivatingDirectory) {
+        String n = "_Архив для Комитета по тарифам";
         for (String name : folderNames) {
             String generatingNameZip = "55555_" + name + "_Архив для Комитета по тарифам";
             String generatingOutputDirectory = directoryOUT + name + "/";
@@ -119,7 +120,8 @@ class ZipService {
     }
 
     static void makeZipForEveryFiles(String directoryOUT, String arhivatingDirectory) {
-        String generatingNameZip = formatDate() + " Протокол обработки файлов IN";
+        String formatDate = dateFormat.format(new Date());
+        String generatingNameZip = formatDate + " Протокол обработки файлов IN";
         ZipService.createZipJustFiles(generatingNameZip, directoryOUT, arhivatingDirectory);
     }
 
